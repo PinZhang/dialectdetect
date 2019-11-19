@@ -15,12 +15,12 @@ def filter_df(df):
 
     df['native_language'] = df['native_language'].map(lambda x: x.split('\n')[0])
 
-    # Example to filter arabic, mandarin, and english and limit to 73 audio files
+    # Example to filter arabic, mandarin, and english and limit to 150 audio files
     arabic = df[df['native_language'] == 'arabic']
     mandarin = df[df['native_language'] == 'mandarin']
-    english = df[df.native_language == 'english'][:73]
-    mandarin = mandarin[mandarin.length_of_english_residence < 10][:73]
-    arabic = arabic[arabic.length_of_english_residence < 10][:73]
+    english = df[df.native_language == 'english'][:150]
+    mandarin = mandarin[mandarin.length_of_english_residence < 10][:150]
+    arabic = arabic[arabic.length_of_english_residence < 10][:150]
 
     df = english.append(arabic)
     df = df.append(mandarin)

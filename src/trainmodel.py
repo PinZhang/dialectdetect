@@ -8,7 +8,7 @@ import multiprocessing
 import librosa
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, scale
 
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Flatten
@@ -50,7 +50,8 @@ def to_mfcc(wav):
     :param wav (numpy array): Wav form
     :return (2d numpy array: MFCC
     '''
-    return(librosa.feature.mfcc(y=wav, sr=RATE, n_mfcc=N_MFCC))
+    # scale the mfcc feature
+    return(scale(librosa.feature.mfcc(y=wav, sr=RATE, n_mfcc=N_MFCC), axis=1))
 
 def remove_silence(wav, thresh=0.04, chunk=5000):
     '''
@@ -60,7 +61,7 @@ def remove_silence(wav, thresh=0.04, chunk=5000):
     '''
 
     tf_list = []
-    for x in range(len(wav) / chunk):
+    for x in range(int(len(wav) / chunk)):
         if (np.any(wav[chunk * x:chunk * (x + 1)] >= thresh) or np.any(wav[chunk * x:chunk * (x + 1)] <= -thresh)):
             tf_list.extend([True] * chunk)
         else:
@@ -88,7 +89,7 @@ def make_segments(mfccs,labels):
     segments = []
     seg_labels = []
     for mfcc,label in zip(mfccs,labels):
-        for start in range(0, mfcc.shape[1] / COL_SIZE):
+        for start in range(0, int(mfcc.shape[1] / COL_SIZE)):
             segments.append(mfcc[:, start * COL_SIZE:(start + 1) * COL_SIZE])
             seg_labels.append(label)
     return(segments, seg_labels)
@@ -100,7 +101,7 @@ def segment_one(mfcc):
     :return (numpy array): Segmented MFCC array
     '''
     segments = []
-    for start in xrange(0, mfcc.shape[1] / COL_SIZE):
+    for start in range(0, int(mfcc.shape[1] / COL_SIZE)):
         segments.append(mfcc[:, start * COL_SIZE:(start + 1) * COL_SIZE])
     return(np.array(segments))
 
@@ -234,7 +235,7 @@ if __name__ == '__main__':
     X_validation, y_validation = make_segments(X_test, y_test)
 
     # Randomize training segments
-    X_train, _, y_train, _ = train_test_split(X_train, y_train, test_size=0)
+    X_train, _, y_train, _ = train_test_split(X_train, y_train, test_size=0.01)
 
     # Train model
     model = train_model(np.array(X_train), np.array(y_train), np.array(X_validation),np.array(y_validation))
