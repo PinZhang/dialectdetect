@@ -32,7 +32,7 @@ def to_categorical(y):
     lang_dict = {}
     for index,language in enumerate(set(y)):
         lang_dict[language] = index
-    y = map(lambda x: lang_dict[x],y)
+    y = y.map(lambda x,lang_dict=lang_dict: lang_dict[x])
     return utils.to_categorical(y, len(lang_dict))
 
 def get_wav(language_num):
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     # Get statistics
     train_count = Counter(y_train)
     test_count =  Counter(y_test)
-    acc_to_beat = test_count.most_common(1)[0][1] / float(np.sum(test_count.values()))
+    acc_to_beat = test_count.most_common(1)[0][1] / float(np.sum(list(test_count.values())))
 
     # To categorical
     y_train = to_categorical(y_train)

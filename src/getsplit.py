@@ -13,6 +13,8 @@ def filter_df(df):
     :return (DataFrame): Filtered DataFrame
     '''
 
+    df['native_language'] = df['native_language'].map(lambda x: x.split('\n')[0])
+
     # Example to filter arabic, mandarin, and english and limit to 73 audio files
     arabic = df[df['native_language'] == 'arabic']
     mandarin = df[df['native_language'] == 'mandarin']
