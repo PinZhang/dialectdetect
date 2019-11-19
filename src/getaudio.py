@@ -1,5 +1,5 @@
 import pandas as pd
-import urllib
+import urllib.request
 import os
 import sys
 from pydub import AudioSegment
@@ -26,7 +26,7 @@ class GetAudio:
         '''
         if not os.path.exists(self.destination_folder):
             if self.debug:
-                print '{} does not exist, creating'.format(self.destination_folder)
+                print('{} does not exist, creating'.format(self.destination_folder))
             os.makedirs('../' + self.destination_folder)
 
     def get_audio(self):
@@ -44,7 +44,7 @@ class GetAudio:
             if not os.path.exists(self.destination_folder +'{}.wav'.format(lang_num)):
                 if self.debug:
                     print('downloading {}'.format(lang_num))
-                (filename, headers) = urllib.urlretrieve(self.url.format(lang_num))
+                (filename, headers) = urllib.request.urlretrieve(self.url.format(lang_num))
                 sound = AudioSegment.from_mp3(filename)
                 sound.export('../' + self.destination_folder + "{}.wav".format(lang_num), format="wav")
                 counter += 1

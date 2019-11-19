@@ -108,16 +108,16 @@ def create_dataframe(languages):
     df['english_residence'] = bio_rows.iloc[:,6]
     df['length_of_english_residence'] = bio_rows.iloc[:,7]
 
-    df['birth_place'] = map(lambda x: x[:-6].split(' ')[2:], df['birth_place'])
-    df['native_language'] = map(lambda x: x.split(' ')[2], df['native_language'])
-    df['other_languages'] = map(lambda x: x.split(' ')[2:], df['other_languages'])
-    df['age_sex'] = map(lambda x: x.split(' ')[2], df['age_sex'])
-    df['age_of_english_onset'] = map(lambda x: float(x.split(' ')[-1]), df['age_of_english_onset'])
-    df['english_learning_method'] = map(lambda x: x.split(' ')[-1], df['english_learning_method'])
-    df['english_residence'] = map(lambda x: x.split(' ')[2:], df['english_residence'])
-    df['length_of_english_residence'] = map(lambda x: float(x.split(' ')[-2]), df['length_of_english_residence'])
+    df['birth_place'] = df['birth_place'].map(lambda x: x[:-6].split(' ')[2:])
+    df['native_language'] = df['native_language'].map(lambda x: x.split(' ')[2])
+    df['other_languages'] = df['other_languages'].map(lambda x: x.split(' ')[2:])
+    df['age_sex'] = df['age_sex'].map(lambda x: x.split(' ')[2])
+    df['age_of_english_onset'] = df['age_of_english_onset'].map(lambda x: float(x.split(' ')[-1]))
+    df['english_learning_method'] = df['english_learning_method'].map(lambda x: x.split(' ')[-1])
+    df['english_residence'] = df['english_residence'].map(lambda x: x.split(' ')[2:])
+    df['length_of_english_residence'] = df['length_of_english_residence'].map(lambda x: float(x.split(' ')[-2]))
 
-    df['age'] = map(lambda x: x.replace(' ','').split(',')[0], df['age_sex'])
+    df['age'] =  df['age_sex'].map(lambda x: x.replace(' ','').split(',')[0])
 
     return(df)
 

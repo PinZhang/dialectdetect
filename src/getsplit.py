@@ -43,4 +43,4 @@ if __name__ == '__main__':
     csv_file = sys.argv[1]
     df = pd.read_csv(csv_file)
     filtered_df = filter_df(df)
-    print split_people(filtered_df)
+    print(split_people(filtered_df))
